@@ -67,9 +67,11 @@ class Program
         
         using(StreamWriter sw = new StreamWriter(filePath)) 
         {
+            sw.WriteLine("FISHING CONTEST WINNER!");
+            sw.WriteLine("Winner is " + fishingWinners.Last().Name + " with score " + fishingWinners.Last().fishingScore);
             foreach (Fisherman f in fishingWinners)
             {
-                if (fishingWinners.Count >= 1)
+                if (fishingWinners.Count == 1)
                 {
                     sw.WriteLine("Winner is " + fishingWinners.Last().Name + " with score " + fishingWinners.Last().fishingScore);
                 }
@@ -100,6 +102,43 @@ class Program
 
             
         
+    }
+
+    public static void appendWinnersToFile(List<Fisherman> fishermen)
+    {
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(desktopPath, "Winners.txt");
+
+        using (StreamWriter sw = File.AppendText(filePath))
+        {
+            sw.WriteLine("NETTING CONTEST WINNER!");
+            sw.WriteLine("Winner is " + fishermen.Last().Name + " with score " + fishermen.Last().nettingScore);
+            foreach (Fisherman f in fishermen)
+            {
+                if (fishermen.Count == 1)
+                {
+                    sw.WriteLine("Winner is " + fishermen.Last().Name + " with score " + fishermen.Last().nettingScore);
+                }
+                else
+                {
+                    if (fishermen.Last() == fishermen[fishermen.Count - 1]
+                        && fishermen.Last().Name != fishermen[fishermen.Count - 1].Name)
+                    {
+                        sw.WriteLine("Winners are " + fishermen.Last().Name + ", " +
+                            fishermen[fishermen.Count - 1].Name + " with score "
+                            + fishermen.Last().nettingScore +
+                            ", " + fishermen[fishermen.Count - 1].nettingScore);
+                    }
+                    else if (fishermen.Count > 1 && fishermen.Last() == fishermen[fishermen.Count - 1]
+                             && fishermen.Last() == fishermen[fishermen.Count - 2])
+                    {
+                        sw.WriteLine("Winners are {0},{1},{2}", fishermen.Last().Name,
+                                                                     fishermen[fishermen.Count - 1].Name,
+                                                                     fishermen[fishermen.Count - 2].Name);
+                    }
+                }
+            }
+        }
     }
     public static double getFishDifficulty(Weather value, double diff)
     {
@@ -296,7 +335,7 @@ class Program
             y++;
         } while (b1.Crew.Count != 0 && y < 15);
 
-        addWinnersToTheFile(nettingWinners);
+        appendWinnersToFile(nettingWinners);
 
         
        
